@@ -19,6 +19,17 @@ public class Util {
         return map.get(key);
     }
 
+    public List<Animal> getByName(String key){
+        for (List<Animal> listaAnimales : map.values()) {
+            for (Animal animal : listaAnimales) {
+                if (animal.getAnimalName().equals(key)){
+                    return getValue(String.valueOf(animal.getAnimalId()));
+                }
+            }
+        }
+        return null;  // Si no se encuentra el animal, se retorna null
+    }
+
     public void add(String key,List<Animal> animal){
         map.put(key, animal);
     }

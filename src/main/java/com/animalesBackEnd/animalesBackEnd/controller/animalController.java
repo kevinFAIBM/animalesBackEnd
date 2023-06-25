@@ -14,13 +14,13 @@ import java.util.List;
 @Controller
 public class animalController {
 
-    @GetMapping("/Animals")
+    @GetMapping("/Animal")
     public ResponseEntity<List<Animal>> getAnimals(@RequestParam String animalName){
         Util.getInstance();
-        return new ResponseEntity<>(Util.getInstance().getValue(animalName), HttpStatus.OK);
+        return new ResponseEntity<>(Util.getInstance().getByName(animalName), HttpStatus.OK);
     }
 
-    @GetMapping("/Animals/{animalId}")
+    @GetMapping("/Animals")
     public ResponseEntity<List<Animal>> getAnimal(@RequestParam int animalId){
         Util.getInstance();
         return new ResponseEntity<>(Util.getInstance().getValue(String.valueOf(animalId)), HttpStatus.OK);
