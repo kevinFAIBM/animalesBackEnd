@@ -11,6 +11,7 @@ public class Animal {
     private String breed;
     private String ownerName;
     private int vetId;
+    private String vetName;
 
     public Animal(int animalId, String animalName, String type, LocalDate dob, String breed, String ownerName, int vetId) {
         super();
@@ -21,6 +22,21 @@ public class Animal {
         this.breed = breed;
         this.ownerName = ownerName;
         this.vetId = vetId;
+    }
+
+    public Animal(int animalId, String animalName, String type, LocalDate dob, String breed, String ownerName, int vetId, String vetName) {
+
+        this.animalId = animalId;
+        this.animalName = animalName;
+        this.type = type;
+        this.dob = dob;
+        this.breed = breed;
+        this.ownerName = ownerName;
+        this.vetId = vetId;
+        this.vetName = vetName;
+    }
+
+    public Animal() {
     }
 
     public int getAnimalId() {
@@ -77,5 +93,13 @@ public class Animal {
 
     public void setVetId(int vetId) {
         this.vetId = vetId;
+    }
+
+    public String getVetName() {
+        return vetName;
+    }
+
+    public void setVetName(String vetName) {
+        this.vetName = vetName;
     }
 }

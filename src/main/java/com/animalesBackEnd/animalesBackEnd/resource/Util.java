@@ -1,13 +1,23 @@
 package com.animalesBackEnd.animalesBackEnd.resource;
 
 import com.animalesBackEnd.animalesBackEnd.model.Animal;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Util {
     private static final HashMap<String, List<Animal>> map = new HashMap<>();
     private static Util instance;
+
     public static synchronized Util getInstance(){
         if (instance == null){
             instance =  new Util();
@@ -15,15 +25,32 @@ public class Util {
         return instance;
     }
 
-    public List<Animal> getValue(String key){
+    public Animal getValuebyName(String animalId){
+        Animal animal = map.get(animalId).get(0);
+
+        return animal;
+    }
+
+    public List<Animal> getValue(int key){
         return map.get(key);
     }
 
-    public List<Animal> getByName(String key){
+    /*public List<Animal> getByName(String key){
         for (List<Animal> listaAnimales : map.values()) {
             for (Animal animal : listaAnimales) {
                 if (animal.getAnimalName().equals(key)){
-                    return getValue(String.valueOf(animal.getAnimalId()));
+                    return getValuebyName(String.valueOf(animal.getAnimalId()), animal.getVetId());
+                }
+            }
+        }
+        return null;  // Si no se encuentra el animal, se retorna null
+    }*/
+
+    public Animal getByName(String key){
+        for (List<Animal> listaAnimales : map.values()) {
+            for (Animal animal : listaAnimales) {
+                if (animal.getAnimalName().equals(key)){
+                    return getValuebyName(String.valueOf(animal.getAnimalId()));
                 }
             }
         }
