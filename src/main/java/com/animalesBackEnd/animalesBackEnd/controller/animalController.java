@@ -29,8 +29,61 @@ public class animalController {
     @GetMapping("/Animal")
     public ResponseEntity<Animal> getAnimals(@RequestParam String animalName){
         Util.getInstance();
-        Animal animal = (Animal) Util.getInstance().getByName(animalName);
+        Animal animal = Util.getInstance().getByName(animalName);
+        if (animal == null){
+            return new ResponseEntity<>(null,HttpStatus.OK);
+        }else {
+            animal = setVetName(animal);
+            return new ResponseEntity<>(animal,HttpStatus.OK);
+        }
+    }
 
+    /*
+    http://localhost:8083/Animal?animalName=perro2
+    */
+
+
+    @GetMapping("/Animals")
+    public ResponseEntity<Animal> getAnimal(@RequestParam int animalId){
+        Util.getInstance();
+        Animal animal = Util.getInstance().getValuebyName(String.valueOf(animalId));
+        if (animal == null){
+            return new ResponseEntity<>(null,HttpStatus.OK);
+        }else {
+            animal = setVetName(animal);
+            return new ResponseEntity<>(animal, HttpStatus.OK);
+        }
+    }
+    /*
+    http://localhost:8083/Animals?animalId=207340818
+    */
+
+    @PutMapping("/Animals/save/{animalId}")
+    public ResponseEntity<String> animalSave(@PathVariable int animalId, @RequestBody Animal animal){
+    List<Animal> animals = Util.getInstance().getValue(animalId);
+    if (animals == null){
+        animals = new ArrayList<Animal>();
+    }
+    animals.add(new Animal(animal.getAnimalId(),animal.getAnimalName(),animal.getType(),LocalDate.now(),animal.getBreed(),animal.getOwnerName(),animal.getVetId()));
+    Util.getInstance().add(String.valueOf(animalId),animals);
+    return new ResponseEntity<>("Success",HttpStatus.OK);
+    }
+
+/*
+    http://localhost:8081/Animals/save/207340817
+
+    {
+        "animalId" : "207340818",
+            "animalName" : "pepe",
+            "type" : "Sagua",
+            "breed" : "Sagua",
+            "ownerName" : "Kevin",
+            "vetId" : "207340817"
+    }
+
+*/
+
+    private Animal setVetName(Animal animal){
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<?> entity = new HttpEntity<>(headers);
@@ -49,44 +102,11 @@ public class animalController {
                 params
         );
 
+        if (response.getBody().isEmpty()){
+            return null;
+        }
         animal.setVetName(response.getBody());
-        return new ResponseEntity<>(animal,HttpStatus.OK);
+        return animal;
     }
-
-    /*
-    http://localhost:8081/Animal?animalName=perro2
-    */
-
-
-    @GetMapping("/Animals")
-    public ResponseEntity<List<Animal>> getAnimal(@RequestParam int animalId){
-        Util.getInstance();
-        return new ResponseEntity<>(Util.getInstance().getValue(animalId), HttpStatus.OK);
-    }
-
-    @PutMapping("/Animals/save/{animalId}")
-    public ResponseEntity<String> animalSave(@PathVariable int animalId, @RequestBody Animal animal){
-    List<Animal> animals = Util.getInstance().getValue(animalId);
-    if (animals == null){
-        animals = new ArrayList<Animal>();
-    }
-    animals.add(new Animal(animal.getAnimalId(),animal.getAnimalName(),animal.getType(),LocalDate.now(),animal.getBreed(),animal.getOwnerName(),animal.getVetId()));
-    Util.getInstance().add(String.valueOf(animalId),animals);
-    return new ResponseEntity<>("Success",HttpStatus.OK);
-    }
-
-/*
-    http://localhost:8081/Animals/save/207340817
-
-    {
-        "animalId" : "207340817",
-            "animalName" : "pepe",
-            "type" : "Sagua",
-            "breed" : "Sagua",
-            "ownerName" : "Kevin",
-            "vetId" : "1"
-    }
-
-*/
 
 }

@@ -35,17 +35,6 @@ public class Util {
         return map.get(key);
     }
 
-    /*public List<Animal> getByName(String key){
-        for (List<Animal> listaAnimales : map.values()) {
-            for (Animal animal : listaAnimales) {
-                if (animal.getAnimalName().equals(key)){
-                    return getValuebyName(String.valueOf(animal.getAnimalId()), animal.getVetId());
-                }
-            }
-        }
-        return null;  // Si no se encuentra el animal, se retorna null
-    }*/
-
     public Animal getByName(String key){
         for (List<Animal> listaAnimales : map.values()) {
             for (Animal animal : listaAnimales) {
